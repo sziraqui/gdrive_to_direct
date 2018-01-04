@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python2
 import sys
 import json
 
@@ -30,8 +30,14 @@ direct_urls = {}
 # Counter that will act as key suffix
 i = 1
 while url_i < len(sys.argv):
-	original_url = sys.argv[url_i]
-	direct_urls['link'+str(i)] = getDirectUrl(original_url)
+	original_url = ""
+	key = ""
+	url_arg = sys.argv[url_i]
+	if "::" in url_arg:
+		key, original_url = url_arg.split("::")
+	else :
+		original_url = url_arg
+	direct_urls[key if len(key)>0 else 'link'+str(i)] = getDirectUrl(original_url)
 	i = i + 1
 	url_i = url_i + 1
 
@@ -42,5 +48,5 @@ if sys.argv[1] == '-o':
 	print "Output written to " + sys.argv[2]
 
 for key in direct_urls:
-	print direct_urls[key]
+	print key+": " + direct_urls[key]
 
